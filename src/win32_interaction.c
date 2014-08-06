@@ -93,19 +93,13 @@ GdkPixbuf* get_window_icon(HWND win, guint req_width, guint req_height)
 
 void raise_window(HWND win)
 {
-HWND hCurrWnd;
-int iMyTID;
-int iCurrTID;
-
-hCurrWnd = GetForegroundWindow();
-iMyTID   = GetCurrentThreadId();
-iCurrTID = GetWindowThreadProcessId(hCurrWnd,0);
-
-AttachThreadInput(iMyTID, iCurrTID, TRUE);
-
-SetForegroundWindow(win);
-
-AttachThreadInput(iMyTID, iCurrTID, FALSE);}
+  HWND hCurrWnd = GetForegroundWindow();
+  int iMyTID   = GetCurrentThreadId();
+  int iCurrTID = GetWindowThreadProcessId(hCurrWnd,0);
+  AttachThreadInput(iMyTID, iCurrTID, TRUE);
+  SetForegroundWindow(win);
+  AttachThreadInput(iMyTID, iCurrTID, FALSE);
+}
 
 HWND* sorted_windows_list(HWND *myown, HWND *active_win, int *nitems)
 {
@@ -136,7 +130,7 @@ void switch_to_window(HWND win)
      (wp.showCmd == SW_SHOWMINNOACTIVE))
     ShowWindow(win, SW_RESTORE);
   else
-    SetForegroundWindow (win);
+    raise_window(win);
 }
 
 void tab_event (gboolean shift);
