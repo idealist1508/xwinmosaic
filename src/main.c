@@ -1167,6 +1167,11 @@ void tab_event (gboolean shift) //FIXME: put prototype for this function
     update_box_list();
     draw_mosaic (GTK_LAYOUT (layout), boxes, wsize, 0,
                  options.box_width, options.box_height);
+#ifdef WIN32
+    gtk_widget_show (window);
+    raise_window (gdk_win32_drawable_get_handle(  window->window ));
+#else
     gtk_window_present (GTK_WINDOW (window));
+#endif
   }
 }
